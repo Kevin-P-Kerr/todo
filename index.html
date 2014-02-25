@@ -2,8 +2,34 @@
 <html ng-app>
   <head>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
+  <script src="todo.js"></script>
+  <link rel="stylesheet" href="todo.css">
   </head>
   <body>
-  <h1> Hello, World! </h1>
+  <h1> Things To Do </h1>
+  <div class="wrapper">
+    <div class="motto">
+      <p> Where the god directs may I go with willing feet </p>
+    </div>
+    <div class="motto">
+      <p> If the gods had not invented honey, we would call figs sweeter </p>
+    </div>
+    <div class="motto">
+      <p> Continual dropping wears away the stone </p>
+    </div>
+  </div>
+  <br>
+  </br>
+  <div ng-controller="CardCtrl">
+    <span> {{cards.length }} remaining </span>
+    <div> {{getCurrentCard().text}} </div>
+    <form ng-submit="addCard()">
+      <input ng-model="newCardText" size="30" placeholder="add new card here">
+      <input type="submit" value="add">
+    </form>
+    <form ng-submit="deferCard()">
+      <input type="submit" value="defer">
+    </form>
+  </div>
   </body>
 </html>
