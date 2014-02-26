@@ -22,13 +22,21 @@
   </br>
   <div ng-controller="CardCtrl">
     <span> {{cards.length }} remaining </span>
-    <div> {{getCurrentCard().text}} </div>
+    <div ng-repeat="card in currentCards">
+      <div> {{card.text}} 
+        <form ng-submit="deferCard()">
+          <input ng-model="card.defered" type="checkbox" value="defer">
+          <input type="submit" value="defer"> 
+        </form>
+        <form ng-submit="finishCard()">
+          <input ng-model="card.done" type="checkbox" value="finish">
+          <input type="submit" value="finish">
+        </form>
+      </div>
+    </div>
     <form ng-submit="addCard()">
       <input ng-model="newCardText" size="30" placeholder="add new card here">
       <input type="submit" value="add">
-    </form>
-    <form ng-submit="deferCard()">
-      <input type="submit" value="defer">
     </form>
   </div>
   </body>
