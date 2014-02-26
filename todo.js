@@ -21,17 +21,20 @@ function CardCtrl ($scope) {
   };
   $scope.filterCurrentCards = function (val) {
     var i =0;
-    var ii = 3;
+    var ii = $scope.currentCards.length;
     var tmp = [];
     var ttmp = [];
     var t;
     for (; i<ii; i++) {
       t = $scope.currentCards.pop();
       if (t[val]) {
+        console.log("HJI");
         t[val] = false;
         ttmp.push(t);
       }
-      tmp.push(t);
+      else {
+       tmp.push(t);
+      }
     }
     for (ii=tmp.length,i=0;i<ii;i++) {
       $scope.currentCards.push(tmp[i]);
