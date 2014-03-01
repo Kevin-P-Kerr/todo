@@ -12,10 +12,11 @@
 
 .card-holder {
   width: 1000px;
-  height: 600px;
+  height: 200px;
 }
 
 .card {
   width:1000px;
-  height:600px;
+  height:200px;
+  float:left;
 }
