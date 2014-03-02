@@ -38,11 +38,13 @@
       <input ng-model="newCardText" size="30" placeholder="add new card here">
       <input type="submit" value="add">
     </form>
-    <form ng-submit="getExistingView()">
+    <form ng-submit="loadCards()">
       <input ng-model="existingViewName" size="30" placeholder="get existing cards here">
       <input type="submit" value="load">
     </form>
+    <p style="display:none;" id="loaded" ng-model="loaded"><p>
     <form ng-submit="sendCards()">
+      <input ng-model="saveName" size="30" placeholder="stack name">
       <input type="submit" value="save">
     </form>
   </div>

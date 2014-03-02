@@ -4,8 +4,21 @@ var Card = function (txt) {
   this.defered = false;
 };
 
-function CardCtrl ($scope) {
-  $scope.cards = %%%CARDS%%%;
+var readCards;
+
+var createReadCards = function ($scope) {
+  readCards = function (cards) {
+    $scope.cards = cards;
+    $scope.getCurrentCards();
+    $scope.loaded =true;
+    var p = document.getElementById("loaded");
+    p.value = "loaded";
+    p.text = "";
+  };
+};
+
+function CardCtrl ($scope,$http) {
+  $scope.cards = [];
   $scope.currentCards = [];
   $scope.getCurrentCards = function () {
     var i =0;
@@ -28,7 +41,6 @@ function CardCtrl ($scope) {
     for (; i<ii; i++) {
       t = $scope.currentCards.pop();
       if (t[val]) {
-        console.log("HJI");
         t[val] = false;
         ttmp.push(t);
       }
@@ -50,7 +62,6 @@ function CardCtrl ($scope) {
   $scope.deferCard = function () {
     var x = $scope.filterCurrentCards("defered"); 
     x.forEach(function (i) {
-      console.log(i);
       $scope.cards.unshift(i);
     });
   };
@@ -61,18 +72,34 @@ function CardCtrl ($scope) {
     $scope.getCurrentCards();
   };
 
-  $scope.getExistingView = function () {
-    if ($scope.existingViewName && $scope.existingViewName.length) {
-      window.location = "/stacks/"+$scope.existingViewName;
+  $scope.loadCards = function () {
+    if (!$scope.existingViewName || !$scope.existingViewName.length) {
+      return;
     }
+    $scope.cards =[];
+    $scope.currentCards = [];
+    $http.get("/stacks/"+$scope.existingViewName).then(function (res) { console.log(res.data); $scope.cards = res.data.reverse();  $scope.getCurrentCards();});
+    $scope.existingViewName = '';
   };
 
   $scope.sendCards = function () {
-    var c = JSON.stringify($scope.cards);
+    if (!$scope.saveName || !$scope.saveName.length) {
+      return;
+    }
+    var t = [];
+    $scope.currentCards.forEach(function (c) {
+      t.push(new Card(c.text));
+    });
+    $scope.cards.forEach(function (c) {
+      t.push(c);
+    });
+    var c = JSON.stringify(t);
+    c = encodeURIComponent(c);
     var px = document.createElement('IMG');
     px.width = 0;
     px.height = 0;
-    px.src = "/save?card="+c;
+    px.src = "/save?cards="+c+'&view='+$scope.saveName;
+    $scope.saveName = '';
     document.body.appendChild(px);
   };
 
@@ -80,6 +107,7 @@ function CardCtrl ($scope) {
 
   if (!$scope.init) {
     $scope.getCurrentCards();
+    createReadCards($scope);
     $scope.init = true;
   }
 };
