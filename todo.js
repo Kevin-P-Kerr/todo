@@ -78,7 +78,11 @@ function CardCtrl ($scope,$http) {
     }
     $scope.cards =[];
     $scope.currentCards = [];
-    $http.get("/stacks/"+$scope.existingViewName).then(function (res) { console.log(res.data); $scope.cards = res.data.reverse();  $scope.getCurrentCards();});
+    $http.get("/stacks/"+$scope.existingViewName).then(function (res) { $scope.cards = res.data.reverse();  $scope.getCurrentCards();});
+    (function () {
+      var s = document.getElementById('saver');
+      s.value = $scope.existingViewName;
+    })();
     $scope.existingViewName = '';
   };
 
@@ -99,7 +103,6 @@ function CardCtrl ($scope,$http) {
     px.width = 0;
     px.height = 0;
     px.src = "/save?cards="+c+'&view='+$scope.saveName;
-    $scope.saveName = '';
     document.body.appendChild(px);
   };
 
